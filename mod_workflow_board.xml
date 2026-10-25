@@ -23,6 +23,7 @@
         <folder>services</folder>
         <folder>src</folder>
         <folder>tmpl</folder>
+        <folder>language</folder>
     </files>
 
     <media destination="mod_workflow_board" folder="media/mod_workflow_board">
@@ -31,9 +32,11 @@
         <filename>joomla.asset.json</filename>
     </media>
 
-    <languages>
-        <language tag="en-GB">language/en-GB/mod_workflow_board.ini</language>
-        <language tag="en-GB">language/en-GB/mod_workflow_board.sys.ini</language>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.mod_workflow_board.ini</language>
+        <language tag="en-GB">en-GB/en-GB.mod_workflow_board.sys.ini</language>
+        <language tag="en-GB">en-GB/mod_workflow_board.ini</language>
+        <language tag="en-GB">en-GB/mod_workflow_board.sys.ini</language>
     </languages>
 
     <config>
