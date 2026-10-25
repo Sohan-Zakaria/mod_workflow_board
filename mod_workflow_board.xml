@@ -106,7 +106,7 @@
                 <!-- Category filter (multi-select) -->
                 <field
                     name="catid"
-                    type="categoryedit"
+                    type="category"
                     label="MOD_WORKFLOW_BOARD_FIELD_CATID_LABEL"
                     description="MOD_WORKFLOW_BOARD_FIELD_CATID_DESC"
                     extension="com_content"
