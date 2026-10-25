@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @package     mod_workflow_board
+    @subpackage  Joomla.Module
+    @copyright   (C) 2024 Open Source Matters, Inc. <https://www.joomla.org>
+    @license     GNU General Public License version 2 or later; see LICENSE.txt
+-->
+<extension type="module" client="administrator" method="upgrade">
+    <name>MOD_WORKFLOW_BOARD</name>
+    <author>Your Name / Organisation</author>
+    <creationDate>2024-01-01</creationDate>
+    <copyright>(C) 2024 Open Source Matters, Inc.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>admin@example.com</authorEmail>
+    <authorUrl>https://www.example.com</authorUrl>
+    <version>1.0.0</version>
+    <description>MOD_WORKFLOW_BOARD_DESC</description>
+
+    <namespace path="src">Joomla\Module\WorkflowBoard\Administrator</namespace>
+
+    <files>
+        <filename module="mod_workflow_board">mod_workflow_board.php</filename>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <media destination="mod_workflow_board" folder="media/mod_workflow_board">
+        <folder>css</folder>
+        <folder>js</folder>
+        <filename>joomla.asset.json</filename>
+    </media>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/mod_workflow_board.ini</language>
+        <language tag="en-GB">language/en-GB/mod_workflow_board.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 BASIC SETTINGS
+            ═══════════════════════════════════════════════════════════ -->
+            <fieldset name="basic" label="MOD_WORKFLOW_BOARD_FIELDSET_BASIC">
+
+                <!-- Workflow selector -->
+                <field
+                    name="workflow_id"
+                    type="sql"
+                    label="MOD_WORKFLOW_BOARD_FIELD_WORKFLOW_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_WORKFLOW_DESC"
+                    query="SELECT id AS value, CONCAT('[', title, ']') AS text FROM #__workflows WHERE extension = 'com_content.article' AND published = 1 ORDER BY title ASC"
+                    key_field="value"
+                    value_field="text"
+                    default=""
+                    first_option_text="MOD_WORKFLOW_BOARD_FIELD_WORKFLOW_AUTO"
+                    first_option_value=""
+                />
+
+                <!-- Layout mode -->
+                <field
+                    name="layout_mode"
+                    type="list"
+                    label="MOD_WORKFLOW_BOARD_FIELD_LAYOUT_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_LAYOUT_DESC"
+                    default="kanban"
+                >
+                    <option value="kanban">MOD_WORKFLOW_BOARD_LAYOUT_KANBAN</option>
+                    <option value="tabs">MOD_WORKFLOW_BOARD_LAYOUT_TABS</option>
+                </field>
+
+                <!-- Enable drag & drop -->
+                <field
+                    name="enable_drag_drop"
+                    type="radio"
+                    label="MOD_WORKFLOW_BOARD_FIELD_DRAGDROP_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_DRAGDROP_DESC"
+                    class="switcher"
+                    default="1"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <!-- Limit per stage -->
+                <field
+                    name="limit_per_stage"
+                    type="number"
+                    label="MOD_WORKFLOW_BOARD_FIELD_LIMIT_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_LIMIT_DESC"
+                    default="5"
+                    min="1"
+                    max="25"
+                    step="1"
+                    filter="int"
+                />
+
+            </fieldset>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 FILTERING
+            ═══════════════════════════════════════════════════════════ -->
+            <fieldset name="filtering" label="MOD_WORKFLOW_BOARD_FIELDSET_FILTERING">
+
+                <!-- Category filter (multi-select) -->
+                <field
+                    name="catid"
+                    type="categoryedit"
+                    label="MOD_WORKFLOW_BOARD_FIELD_CATID_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_CATID_DESC"
+                    extension="com_content"
+                    multiple="true"
+                    default=""
+                    required="false"
+                />
+
+                <!-- Author filter -->
+                <field
+                    name="author_filter"
+                    type="list"
+                    label="MOD_WORKFLOW_BOARD_FIELD_AUTHOR_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_AUTHOR_DESC"
+                    default="all"
+                >
+                    <option value="all">MOD_WORKFLOW_BOARD_AUTHOR_ALL</option>
+                    <option value="by_me">MOD_WORKFLOW_BOARD_AUTHOR_BY_ME</option>
+                    <option value="not_me">MOD_WORKFLOW_BOARD_AUTHOR_NOT_ME</option>
+                </field>
+
+                <!-- Order by -->
+                <field
+                    name="order_by"
+                    type="list"
+                    label="MOD_WORKFLOW_BOARD_FIELD_ORDER_LABEL"
+                    description="MOD_WORKFLOW_BOARD_FIELD_ORDER_DESC"
+                    default="modified_desc"
+                >
+                    <option value="modified_desc">MOD_WORKFLOW_BOARD_ORDER_MODIFIED_DESC</option>
+                    <option value="modified_asc">MOD_WORKFLOW_BOARD_ORDER_MODIFIED_ASC</option>
+                    <option value="created_desc">MOD_WORKFLOW_BOARD_ORDER_CREATED_DESC</option>
+                    <option value="created_asc">MOD_WORKFLOW_BOARD_ORDER_CREATED_ASC</option>
+                    <option value="title_asc">MOD_WORKFLOW_BOARD_ORDER_TITLE_ASC</option>
+                    <option value="title_desc">MOD_WORKFLOW_BOARD_ORDER_TITLE_DESC</option>
+                </field>
+
+            </fieldset>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 ADVANCED
+            ═══════════════════════════════════════════════════════════ -->
+            <fieldset name="advanced" label="JGLOBAL_FIELDSET_ADVANCED">
+
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_LAYOUT_DESC"
+                    module="mod_workflow_board"
+                    client="administrator"
+                />
+
+                <field
+                    name="moduleclass_sfx"
+                    type="textarea"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+                    rows="3"
+                />
+
+                <field
+                    name="cache"
+                    type="list"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                    description="COM_MODULES_FIELD_CACHING_DESC"
+                    default="0"
+                    filter="integer"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+
+                <field
+                    name="cache_time"
+                    type="number"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                    description="COM_MODULES_FIELD_CACHE_TIME_DESC"
+                    default="900"
+                    min="0"
+                    filter="integer"
+                />
+
+            </fieldset>
+
+        </fields>
+    </config>
+</extension>

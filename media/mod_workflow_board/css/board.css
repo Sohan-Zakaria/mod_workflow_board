@@ -1,0 +1,394 @@
+/**
+ * @package     mod_workflow_board
+ * @subpackage  Joomla.Module
+ * @copyright   (C) 2024 Open Source Matters, Inc. <https://www.joomla.org>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * Stylesheet for the Workflow Pipeline Kanban & Status Summary module.
+ * Designed for Atum (Bootstrap 5) – dark-mode compatible via CSS custom properties.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ROOT CUSTOM PROPERTIES  (dark-mode handled via prefers-color-scheme +
+   [data-color-scheme="dark"] selector so Atum dark mode works automatically)
+═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --wfb-col-bg:           #f8f9fa;
+  --wfb-col-border:       #dee2e6;
+  --wfb-col-header-bg:    #e9ecef;
+  --wfb-col-header-color: #495057;
+  --wfb-card-bg:          #ffffff;
+  --wfb-card-border:      #dee2e6;
+  --wfb-card-shadow:      0 1px 3px rgba(0, 0, 0, .08);
+  --wfb-card-hover-shadow:0 3px 8px rgba(0, 0, 0, .15);
+  --wfb-card-drag-shadow: 0 6px 20px rgba(0, 0, 0, .22);
+  --wfb-card-drag-border: #0d6efd;
+  --wfb-card-over-bg:     #e7f1ff;
+  --wfb-card-locked-bg:   #fff8e1;
+  --wfb-card-locked-border: #ffc107;
+  --wfb-card-title-color: inherit;
+  --wfb-title-hover:      #0d6efd;
+  --wfb-scrollbar-thumb:  #ced4da;
+  --wfb-col-width:        260px;
+  --wfb-col-gap:          12px;
+  --wfb-transition-speed: 220ms;
+  --wfb-radius:           .375rem;
+}
+
+/* Atum dark-mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wfb-col-bg:           #2b2e3b;
+    --wfb-col-border:       #3e4252;
+    --wfb-col-header-bg:    #24263a;
+    --wfb-col-header-color: #c1c6d9;
+    --wfb-card-bg:          #32364a;
+    --wfb-card-border:      #454a62;
+    --wfb-card-shadow:      0 1px 3px rgba(0, 0, 0, .3);
+    --wfb-card-hover-shadow:0 3px 8px rgba(0, 0, 0, .5);
+    --wfb-card-drag-shadow: 0 6px 20px rgba(0, 0, 0, .6);
+    --wfb-card-over-bg:     #1c3a6e;
+    --wfb-card-locked-bg:   #3a2e00;
+    --wfb-card-locked-border: #ffc107;
+    --wfb-title-hover:      #7aadff;
+    --wfb-scrollbar-thumb:  #4e5470;
+  }
+}
+
+/* Explicit Atum [data-color-scheme] override */
+[data-color-scheme="dark"] {
+  --wfb-col-bg:           #2b2e3b;
+  --wfb-col-border:       #3e4252;
+  --wfb-col-header-bg:    #24263a;
+  --wfb-col-header-color: #c1c6d9;
+  --wfb-card-bg:          #32364a;
+  --wfb-card-border:      #454a62;
+  --wfb-card-shadow:      0 1px 3px rgba(0, 0, 0, .3);
+  --wfb-card-hover-shadow:0 3px 8px rgba(0, 0, 0, .5);
+  --wfb-card-drag-shadow: 0 6px 20px rgba(0, 0, 0, .6);
+  --wfb-card-over-bg:     #1c3a6e;
+  --wfb-card-locked-bg:   #3a2e00;
+  --wfb-title-hover:      #7aadff;
+  --wfb-scrollbar-thumb:  #4e5470;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODULE WRAPPER
+═══════════════════════════════════════════════════════════════════════════ */
+.mod-workflow-board {
+  container-type: inline-size;
+  font-size: .875rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KANBAN LAYOUT
+═══════════════════════════════════════════════════════════════════════════ */
+.wfb-kanban-wrapper {
+  position: relative;
+}
+
+.wfb-kanban-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: .5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--wfb-scrollbar-thumb) transparent;
+}
+
+.wfb-kanban-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.wfb-kanban-scroll::-webkit-scrollbar-thumb {
+  background: var(--wfb-scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.wfb-kanban-board {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--wfb-col-gap);
+  min-width: max-content;
+}
+
+/* ── Column ─────────────────────────────────────────────────────────────── */
+.wfb-column {
+  display: flex;
+  flex-direction: column;
+  width: var(--wfb-col-width);
+  min-width: var(--wfb-col-width);
+  max-height: 70vh;
+  border: 1px solid var(--wfb-col-border);
+  border-radius: var(--wfb-radius);
+  background: var(--wfb-col-bg);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: box-shadow var(--wfb-transition-speed) ease;
+}
+
+.wfb-column.wfb-drag-over {
+  box-shadow: 0 0 0 2px var(--wfb-card-drag-border);
+}
+
+.wfb-col-header {
+  padding: .5rem .75rem;
+  background: var(--wfb-col-header-bg);
+  border-bottom: 1px solid var(--wfb-col-border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.wfb-col-title {
+  font-size: .8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--wfb-col-header-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Card list (scrollable) ─────────────────────────────────────────────── */
+.wfb-card-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  min-height: 3rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--wfb-scrollbar-thumb) transparent;
+  transition: background var(--wfb-transition-speed) ease;
+}
+
+.wfb-card-list::-webkit-scrollbar {
+  width: 4px;
+}
+.wfb-card-list::-webkit-scrollbar-thumb {
+  background: var(--wfb-scrollbar-thumb);
+  border-radius: 2px;
+}
+
+.wfb-card-list.wfb-drag-over {
+  background: var(--wfb-card-over-bg);
+}
+
+.wfb-empty-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  color: var(--wfb-scrollbar-thumb);
+  font-size: 1.4rem;
+}
+
+/* ── Article card ───────────────────────────────────────────────────────── */
+.wfb-card {
+  background: var(--wfb-card-bg);
+  border: 1px solid var(--wfb-card-border);
+  border-radius: var(--wfb-radius);
+  box-shadow: var(--wfb-card-shadow);
+  padding: .5rem .625rem;
+  cursor: default;
+  transition:
+    box-shadow var(--wfb-transition-speed) ease,
+    opacity    var(--wfb-transition-speed) ease,
+    transform  var(--wfb-transition-speed) ease;
+}
+
+.wfb-card:hover {
+  box-shadow: var(--wfb-card-hover-shadow);
+}
+
+.wfb-card[draggable="true"] {
+  cursor: grab;
+}
+.wfb-card[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.wfb-card.wfb-dragging {
+  opacity: .45;
+  transform: scale(.98);
+  box-shadow: var(--wfb-card-drag-shadow);
+  border-color: var(--wfb-card-drag-border);
+}
+
+.wfb-card.wfb-card--locked {
+  background: var(--wfb-card-locked-bg);
+  border-color: var(--wfb-card-locked-border);
+}
+
+.wfb-card.wfb-card--transitioning {
+  pointer-events: none;
+  opacity: .6;
+}
+
+.wfb-card.wfb-card--success {
+  animation: wfbPulseSuccess .6s ease;
+}
+
+.wfb-card.wfb-card--error {
+  animation: wfbShakeError .5s ease;
+}
+
+@keyframes wfbPulseSuccess {
+  0%   { box-shadow: 0 0 0 0 rgba(25, 135, 84, .5); }
+  70%  { box-shadow: 0 0 0 6px rgba(25, 135, 84, 0); }
+  100% { box-shadow: var(--wfb-card-shadow); }
+}
+
+@keyframes wfbShakeError {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-4px); }
+  40%       { transform: translateX(4px); }
+  60%       { transform: translateX(-3px); }
+  80%       { transform: translateX(3px); }
+}
+
+/* card sub-sections */
+.wfb-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: .25rem;
+  margin-bottom: .35rem;
+}
+
+.wfb-card-title {
+  font-weight: 600;
+  color: var(--wfb-card-title-color);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.35;
+  font-size: .82rem;
+  transition: color var(--wfb-transition-speed) ease;
+}
+
+.wfb-card-title:hover {
+  color: var(--wfb-title-hover);
+  text-decoration: underline;
+}
+
+.wfb-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem .5rem;
+  font-size: .72rem;
+  color: #6c757d;
+  margin-bottom: .35rem;
+}
+
+.wfb-cat-badge {
+  font-size: .68rem;
+  border-radius: .25rem;
+}
+
+.wfb-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: .25rem;
+}
+
+/* ── Drag placeholder ghost ─────────────────────────────────────────────── */
+.wfb-drag-ghost {
+  height: 60px;
+  border: 2px dashed var(--wfb-card-drag-border);
+  border-radius: var(--wfb-radius);
+  background: var(--wfb-card-over-bg);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABBED LAYOUT
+═══════════════════════════════════════════════════════════════════════════ */
+.wfb-tab-nav {
+  flex-wrap: wrap;
+}
+
+.wfb-tab-content {
+  border: 1px solid var(--wfb-col-border);
+  border-top: none;
+  border-radius: 0 0 var(--wfb-radius) var(--wfb-radius);
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--wfb-scrollbar-thumb) transparent;
+}
+
+.wfb-tab-content::-webkit-scrollbar {
+  width: 6px;
+}
+.wfb-tab-content::-webkit-scrollbar-thumb {
+  background: var(--wfb-scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.wfb-list-item {
+  padding: .5rem .75rem;
+  border-left: none;
+  border-right: none;
+}
+
+.wfb-list-item:first-child {
+  border-top: none;
+}
+
+.wfb-list-title {
+  font-size: .83rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+  max-width: 240px;
+}
+
+.wfb-list-title:hover {
+  color: var(--wfb-title-hover);
+}
+
+.wfb-list-meta {
+  font-size: .72rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SPINNER OVERLAY (used during AJAX)
+═══════════════════════════════════════════════════════════════════════════ */
+.wfb-spinner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: var(--wfb-radius);
+  pointer-events: none;
+}
+
+[data-color-scheme="dark"] .wfb-spinner-overlay {
+  background: rgba(0, 0, 0, .55);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — container queries (Joomla cpanel sidebar column)
+═══════════════════════════════════════════════════════════════════════════ */
+@container (max-width: 300px) {
+  .wfb-kanban-board {
+    flex-direction: column;
+    min-width: unset;
+  }
+  .wfb-column {
+    width: 100%;
+    min-width: 100%;
+    max-height: unset;
+  }
+  .wfb-kanban-scroll {
+    overflow-x: hidden;
+  }
+}
