@@ -16,7 +16,7 @@
     <version>1.0.0</version>
     <description>MOD_WORKFLOW_BOARD_DESC</description>
 
-    <namespace path="src">Joomla\Module\WorkflowBoard\Administrator</namespace>
+    <namespace path="src">Joomla\Module\WorkflowBoard</namespace>
 
     <files>
         <filename module="mod_workflow_board">mod_workflow_board.php</filename>

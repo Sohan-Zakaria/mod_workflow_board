@@ -134,7 +134,6 @@ class WorkflowBoardHelper implements DatabaseAwareInterface
                     $db->quoteName('s.description'),
                     $db->quoteName('s.ordering'),
                     $db->quoteName('s.default'),
-                    $db->quoteName('s.condition'),
                     $db->quoteName('w.id', 'workflow_id'),
                     $db->quoteName('w.title', 'workflow_title'),
                 ]

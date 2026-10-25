@@ -35,7 +35,7 @@ return new class implements ServiceProviderInterface {
     public function register(Container $container): void
     {
         $container->registerServiceProvider(
-            new ModuleDispatcherFactory('\\Joomla\\Module\\WorkflowBoard\\Administrator')
+            new ModuleDispatcherFactory('\\Joomla\\Module\\WorkflowBoard')
         );
 
         $container->registerServiceProvider(
