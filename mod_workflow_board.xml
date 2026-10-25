@@ -77,13 +77,13 @@
                 <field
                     name="enable_drag_drop"
                     type="radio"
+                    layout="joomla.form.field.radio.switcher"
                     label="MOD_WORKFLOW_BOARD_FIELD_DRAGDROP_LABEL"
                     description="MOD_WORKFLOW_BOARD_FIELD_DRAGDROP_DESC"
-                    class="switcher"
                     default="1"
                 >
-                    <option value="1">JYES</option>
                     <option value="0">JNO</option>
+                    <option value="1">JYES</option>
                 </field>
 
                 <!-- Limit per stage -->
