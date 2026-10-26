@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "$schema": "https://developer.joomla.org/schemas/json-meta/web_asset.json",
   "name": "mod_workflow_board",
   "version": "1.0.0",
   "description": "Workflow Pipeline Kanban & Status Summary module assets",
@@ -8,22 +8,20 @@
     {
       "name": "mod_workflow_board.board",
       "type": "style",
-      "uri": "mod_workflow_board/css/board.css",
-      "version": "1.0.0",
-      "dependencies": []
+      "uri": "mod_workflow_board/board.css",
+      "version": "1.0.0"
     },
     {
       "name": "mod_workflow_board.board",
       "type": "script",
-      "uri": "mod_workflow_board/js/board.js",
-      "version": "1.0.0",
+      "uri": "mod_workflow_board/board.js",
       "dependencies": [
         "core"
       ],
       "attributes": {
-        "type": "module",
-        "defer": true
-      }
+        "type": "module"
+      },
+      "version": "1.0.0"
     }
   ]
 }

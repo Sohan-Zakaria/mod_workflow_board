@@ -48,6 +48,7 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
         $doc    = $app->getDocument();
 
         /** @var WorkflowBoardHelper $helper */
+        $app->getLanguage()->load('com_workflow');
         $helper = $this->getHelperFactory()->getHelper('WorkflowBoardHelper');
 
         // ── Workflow-enabled guard ────────────────────────────────────────
