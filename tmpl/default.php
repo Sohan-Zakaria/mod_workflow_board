@@ -183,6 +183,7 @@ $sfx      = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_Q
                                     <button class="wfb-btn-transition dropdown-toggle"
                                             type="button"
                                             data-bs-toggle="dropdown"
+                                            data-bs-display="static"
                                             aria-expanded="false"
                                             title="<?php echo Text::_('MOD_WORKFLOW_BOARD_TRANSITIONS_LABEL'); ?>"
                                             aria-label="<?php echo Text::_('MOD_WORKFLOW_BOARD_TRANSITIONS_LABEL'); ?>">
@@ -190,7 +191,7 @@ $sfx      = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_Q
                                         <span><?php echo Text::_('MOD_WORKFLOW_BOARD_TRANSITION_BTN'); ?></span>
                                         <span class="icon-chevron-down ms-1 wfb-caret" aria-hidden="true"></span>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end wfb-dropdown shadow-sm"
+                                    <ul class="dropdown-menu dropdown-menu-end wfb-dropdown wfb-transition-list shadow-sm"
                                         data-article-id="<?php echo (int) $article->id; ?>"
                                         data-stage-id="<?php echo (int) $stage->id; ?>">
                                         <li class="dropdown-header small text-uppercase fw-bold text-muted py-1">
@@ -326,13 +327,14 @@ $sfx      = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_Q
                                     <button class="wfb-btn-transition dropdown-toggle"
                                             type="button"
                                             data-bs-toggle="dropdown"
+                                            data-bs-display="static"
                                             aria-expanded="false"
                                             title="<?php echo Text::_('MOD_WORKFLOW_BOARD_TRANSITIONS_LABEL'); ?>">
                                         <span class="icon-arrow-right me-1" aria-hidden="true"></span>
                                         <span><?php echo Text::_('MOD_WORKFLOW_BOARD_TRANSITION_BTN'); ?></span>
                                         <span class="icon-chevron-down ms-1 wfb-caret" aria-hidden="true"></span>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end wfb-dropdown shadow-sm"
+                                    <ul class="dropdown-menu dropdown-menu-end wfb-dropdown wfb-transition-list shadow-sm"
                                         data-article-id="<?php echo (int) $article->id; ?>"
                                         data-stage-id="<?php echo (int) $stage->id; ?>">
                                         <li class="dropdown-header small text-uppercase fw-bold text-muted py-1">
