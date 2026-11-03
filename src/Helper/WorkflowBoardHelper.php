@@ -19,7 +19,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\User;
-use Joomla\Component\Workflow\Administrator\Workflow\Workflow;
+use Joomla\CMS\Workflow\Workflow;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -498,7 +498,7 @@ class WorkflowBoardHelper implements DatabaseAwareInterface
         // ── 5. Execute the transition via the core Workflow class ─────────
         // This fires all workflow plugins (state changes, emails, etc.)
         try {
-            $workflow = new Workflow(['extension' => 'com_content.article']);
+            $workflow = new Workflow('com_content.article');
             $result   = $workflow->executeTransition([$itemId], $transitionId);
         } catch (\Exception $e) {
             http_response_code(500);
